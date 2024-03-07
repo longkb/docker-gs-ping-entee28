@@ -19,6 +19,10 @@ WORKDIR /app
 RUN go env -w GOMODCACHE=/app/cache/modcache
 RUN go env -w GOCACHE=/app/cache/buildcache
 
+COPY --from=dependencies $CI_PROJECT_DIR/go.mod $CI_PROJECT_DIR/go.sum ./
+
+RUN go mod download
+
 COPY --from=dependencies $CI_PROJECT_DIR/cache ./cache
 COPY --from=dependencies $CI_PROJECT_DIR/*.go ./
 
