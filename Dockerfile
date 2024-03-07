@@ -6,12 +6,6 @@ ARG CI_PROJECT_DIR
 
 WORKDIR $CI_PROJECT_DIR
 
-RUN go env -w GOMODCACHE=$CI_PROJECT_DIR/cache/modcache
-
-RUN go env -w GOCACHE=$CI_PROJECT_DIR/cache/buildcache
-
-RUN go mod download
-
 ##
 ## Build the application from source
 ##
@@ -22,14 +16,10 @@ ARG CI_PROJECT_DIR
 
 WORKDIR /app
 
-COPY --from=dependencies $CI_PROJECT_DIR/go.mod $CI_PROJECT_DIR/go.sum ./
-COPY --from=dependencies $CI_PROJECT_DIR/cache ./cache
-
 RUN go env -w GOMODCACHE=/app/cache/modcache
 RUN go env -w GOCACHE=/app/cache/buildcache
 
-RUN go mod download
-
+COPY --from=dependencies $CI_PROJECT_DIR/cache ./cache
 COPY --from=dependencies $CI_PROJECT_DIR/*.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
