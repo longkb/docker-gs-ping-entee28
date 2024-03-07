@@ -1,0 +1,22 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: kaniko
+spec:
+  containers:
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:debug
+      envFrom:
+        - secretRef:
+            name: kaniko-secret
+      command:
+        - /busybox/cat
+      tty: true
+      volumeMounts:
+        - name: docker-config
+          mountPath: /kaniko/.docker/
+  restartPolicy: Never
+  volumes:
+    - name: docker-config
+      configMap:
+        name: docker-config
