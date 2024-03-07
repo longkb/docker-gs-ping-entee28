@@ -7,9 +7,13 @@ pipeline {
         stage('Cache stage') {
             agent any
 
+            environment {
+                CI_PROJECT_DIR = "${env.WORKSPACE}"
+            }
+
             steps {
-                sh 'go env -w GOMODCACHE=cache/modcache'
-                sh 'go env -w GOCACHE=cache/buildcache'
+                sh 'go env -w GOMODCACHE=$CI_PROJECT_DIR/cache/modcache'
+                sh 'go env -w GOCACHE=$CI_PROJECT_DIR/cache/buildcache'
 
                 cache(maxCacheSize: 250, defaultBranch: 'main', caches: [
                     arbitraryFileCache(
@@ -31,14 +35,10 @@ pipeline {
             }
 
             environment {
-                PATH = "/busybox:/kaniko:$PATH"
                 CI_PROJECT_DIR = "${env.WORKSPACE}"
             }
 
             steps {
-                sh 'go env -w GOMODCACHE=cache/modcache'
-                sh 'go env -w GOCACHE=cache/buildcache'
-
                 cache(maxCacheSize: 250, defaultBranch: 'main', caches: [
                     arbitraryFileCache(
                         path: 'cache/modcache,cache/buildcache',
