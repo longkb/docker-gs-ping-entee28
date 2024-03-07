@@ -14,7 +14,7 @@ pipeline {
                         cacheValidityDecidingFile: 'go.sum'
                     )
                 ]) {
-                    sh 'go env GOPATH'
+                    sh 'ls /home/jenkins/go/pkg'
                     sh 'go mod download'
                 }
             }
