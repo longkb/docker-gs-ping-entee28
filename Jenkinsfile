@@ -8,13 +8,15 @@ pipeline {
             agent any
 
             steps {
+                sh 'go env -w GOMODCACHE=cache/modcache'
+                sh 'go env -w GOCACHE=cache/buildcache'
+
                 cache(maxCacheSize: 250, defaultBranch: 'main', caches: [
                     arbitraryFileCache(
-                        path: '$HOME/go',
+                        path: 'cache/modcache,cache/buildcache',
                         cacheValidityDecidingFile: 'go.sum'
                     )
                 ]) {
-                    sh 'go env GOPATH'
                     sh 'go mod download'
                 }
             }
@@ -34,13 +36,15 @@ pipeline {
             }
 
             steps {
+                sh 'go env -w GOMODCACHE=cache/modcache'
+                sh 'go env -w GOCACHE=cache/buildcache'
+
                 cache(maxCacheSize: 250, defaultBranch: 'main', caches: [
                     arbitraryFileCache(
-                        path: '$HOME/go',
+                        path: 'cache/modcache,cache/buildcache',
                         cacheValidityDecidingFile: 'go.sum'
                     )
                 ]) {
-                    sh 'go env GOPATH'
                     sh '''#!/busybox/sh
                         /kaniko/executor \
                         --cache=true \
