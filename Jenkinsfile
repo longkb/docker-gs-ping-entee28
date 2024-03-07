@@ -17,7 +17,7 @@ pipeline {
 
                 cache(maxCacheSize: 250, defaultBranch: 'main', caches: [
                     arbitraryFileCache(
-                        path: 'cache/modcache,cache/buildcache',
+                        path: 'cache',
                         cacheValidityDecidingFile: 'go.sum'
                     )
                 ]) {
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 cache(maxCacheSize: 250, defaultBranch: 'main', caches: [
                     arbitraryFileCache(
-                        path: 'cache/modcache,cache/buildcache',
+                        path: 'cache',
                         cacheValidityDecidingFile: 'go.sum'
                     )
                 ]) {
