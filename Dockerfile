@@ -6,7 +6,7 @@ ARG CI_PROJECT_DIR
 
 WORKDIR $CI_PROJECT_DIR
 
-RUN ls /home/jenkins/go/pkg
+RUN 'go env GOPATH'
 
 RUN go mod download
 

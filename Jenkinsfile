@@ -14,7 +14,7 @@ pipeline {
                         cacheValidityDecidingFile: 'go.sum'
                     )
                 ]) {
-                    sh 'ls /home/jenkins/go/pkg'
+                    sh 'go env GOPATH'
                     sh 'go mod download'
                 }
             }
@@ -40,6 +40,7 @@ pipeline {
                         cacheValidityDecidingFile: 'go.sum'
                     )
                 ]) {
+                    sh 'go env GOPATH'
                     sh '''#!/busybox/sh
                         /kaniko/executor \
                         --cache=true \
