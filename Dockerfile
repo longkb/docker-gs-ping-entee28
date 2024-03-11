@@ -13,8 +13,7 @@ RUN  go mod download
 
 COPY *.go ./
 
-RUN --mount=type=cache,target=/go/pkg/mod/ \
-    CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
+RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
 
 ##
 ## Run the tests in the container
