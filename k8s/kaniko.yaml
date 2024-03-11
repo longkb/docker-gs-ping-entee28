@@ -15,8 +15,15 @@ spec:
       volumeMounts:
         - name: docker-config
           mountPath: /kaniko/.docker/
+        - name: go-cache
+          mountPath: /root/go
+        - name: go-cache
+          mountPath: /root/.cache
   restartPolicy: Never
   volumes:
     - name: docker-config
       configMap:
         name: docker-config
+    - name: go-cache
+      persistentVolumeClaim:
+        claimName: my-azurefile
