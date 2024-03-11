@@ -12,6 +12,7 @@ pipeline {
 
             environment {
                 PATH = "/busybox:/kaniko:$PATH"
+                CI_PROJECT_DIR = "${env.WORKSPACE}"
             }
 
             steps {
@@ -20,8 +21,8 @@ pipeline {
                     --cache=true \
                     --use-new-run \
                     --snapshot-mode=redo \
-                    --context '.' \
-                    --dockerfile Dockerfile \
+                    --context $CI_PROJECT_DIR \
+                    --dockerfile $CI_PROJECT_DIR/Dockerfile \
                     --verbosity debug \
                     --destination thachthucregistry.azurecr.io/minimal-go:latest \
                 '''
