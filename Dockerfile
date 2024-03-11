@@ -9,11 +9,13 @@ FROM golang:1.22.1 AS build-stage
 WORKDIR /app
 
 COPY go.mod go.sum ./
-RUN go mod download
+RUN --mount=type=cache,target=/go/pkg/mod/ \ 
+    go mod download
 
 COPY *.go ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
+RUN --mount=type=cache,target=/go/pkg/mod/ \
+    CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
 
 ##
 ## Run the tests in the container
