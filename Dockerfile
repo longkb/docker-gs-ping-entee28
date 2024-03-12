@@ -9,7 +9,8 @@ FROM golang:1.22.1 AS build-stage
 WORKDIR /app
 
 COPY go.mod go.sum ./
-RUN  go mod download
+RUN --mount=type=cache,target=/go/pkg/mod/ \ 
+    go mod download
 
 COPY *.go ./
 
