@@ -9,18 +9,22 @@ FROM golang:1.22.1 AS build-stage
 WORKDIR /app
 
 COPY go.mod go.sum ./
-RUN  go mod download
+RUN --mount=type=cache,target=/go/pkg/mod/ \ 
+    go mod download
 
 COPY *.go ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
+RUN --mount=type=cache,target=/go/pkg/mod/ \
+    --mount=type=cache,target=/.cache \
+    CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
 
 ##
 ## Run the tests in the container
 ##
 
 FROM build-stage AS run-test-stage
-RUN go test -v ./...
+RUN --mount=type=cache,target=/.cache \
+    go test -v ./...
 
 ##
 ## Deploy the application binary into a lean image

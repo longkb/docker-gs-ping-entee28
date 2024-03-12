@@ -17,6 +17,8 @@ spec:
           mountPath: /kaniko/.docker/
         - name: go-cache
           mountPath: /go/pkg/mod
+        - name: go-cache
+          mountPath: /.cache
   restartPolicy: Never
   volumes:
     - name: docker-config
