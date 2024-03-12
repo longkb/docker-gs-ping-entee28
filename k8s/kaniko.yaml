@@ -28,4 +28,4 @@ spec:
         name: docker-config
     - name: go-cache
       persistentVolumeClaim:
-        claimName: my-azurefile1
+        claimName: my-azurefile
