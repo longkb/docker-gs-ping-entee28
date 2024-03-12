@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 COPY *.go ./
 
 RUN --mount=type=cache,target=/go/pkg/mod/ \
-    --mount=type=cache,target=/.cache \
+    --mount=type=cache,target=/.cache/go-build \
     CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
 
 ##
@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 ##
 
 FROM build-stage AS run-test-stage
-RUN --mount=type=cache,target=/.cache \
+RUN --mount=type=cache,target=/.cache/go-build \
     go test -v ./...
 
 ##

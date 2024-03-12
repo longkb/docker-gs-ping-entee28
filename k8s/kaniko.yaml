@@ -19,7 +19,7 @@ spec:
           mountPath: /go/pkg/mod
           subPath: mod-cache
         - name: go-cache
-          mountPath: /.cache
+          mountPath: /.cache/go-build
           subPath: build-cache
   restartPolicy: Never
   volumes:
