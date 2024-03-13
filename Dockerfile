@@ -8,8 +8,7 @@ FROM golang:1.22.1 AS build-stage
 
 WORKDIR /app
 
-RUN go env -w GOCACHE=/go-cache
-RUN go env -w GOMODCACHE=/gomod-cache
+RUN go env -w GOCACHE=/go-cache && go env -w GOMODCACHE=/gomod-cache
 
 COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/gomod-cache \ 
@@ -27,8 +26,9 @@ RUN --mount=type=cache,target=/gomod-cache \
 
 FROM build-stage AS run-test-stage
 
-RUN go env -w GOCACHE=/go-cache
-RUN go env -w GOMODCACHE=/gomod-cache
+WORKDIR /
+
+RUN go env -w GOCACHE=/go-cache && go env -w GOMODCACHE=/gomod-cache
 
 RUN --mount=type=cache,target=/go-cache \
     --mount=type=cache,target=/gomod-cache \
