@@ -8,14 +8,17 @@ FROM golang:1.22.1 AS build-stage
 
 WORKDIR /app
 
+RUN go env -w GOCACHE=/go-cache
+RUN go env -w GOMODCACHE=/gomod-cache
+
 COPY go.mod go.sum ./
-RUN --mount=type=cache,target=/go/pkg/mod/ \ 
+RUN --mount=type=cache,target=/gomod-cache \ 
     go mod download
 
 COPY *.go ./
 
-RUN --mount=type=cache,target=/go/pkg/mod/ \
-    --mount=type=cache,target=/.cache/go-build \
+RUN --mount=type=cache,target=/gomod-cache \
+    --mount=type=cache,target=/go-cache \
     CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
 
 ##
@@ -23,7 +26,12 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 ##
 
 FROM build-stage AS run-test-stage
-RUN --mount=type=cache,target=/.cache/go-build \
+
+RUN go env -w GOCACHE=/go-cache
+RUN go env -w GOMODCACHE=/gomod-cache
+
+RUN --mount=type=cache,target=/go-cache \
+    --mount=type=cache,target=/gomod-cache \
     go test -v ./...
 
 ##
