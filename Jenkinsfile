@@ -18,7 +18,6 @@ pipeline {
                 sh '''#!/busybox/sh
                     /kaniko/executor \
                     --cache=true \
-                    --use-new-run \
                     --snapshot-mode=redo \
                     --context '.' \
                     --dockerfile Dockerfile \
