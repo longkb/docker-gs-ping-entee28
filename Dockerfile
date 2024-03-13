@@ -26,8 +26,6 @@ RUN --mount=type=cache,target=/gomod-cache \
 
 FROM build-stage AS run-test-stage
 
-RUN go env -w GOCACHE=/go-cache && go env -w GOMODCACHE=/gomod-cache
-
 RUN --mount=type=cache,target=/go-cache \
     --mount=type=cache,target=/gomod-cache \
     go test -v ./...
