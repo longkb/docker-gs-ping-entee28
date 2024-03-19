@@ -5,12 +5,11 @@ metadata:
 provisioner: file.csi.azure.com
 allowVolumeExpansion: true
 mountOptions:
-  - dir_mode=0777
-  - file_mode=0777
-  - uid=0
-  - gid=0
-  - mfsymlinks
-  - cache=strict
+  - nconnect=4
+  - noresvport
   - actimeo=30
+  - rsize=1048576
+  - wsize=1048576
 parameters:
   skuName: Premium_LRS
+  protocol: nfs
