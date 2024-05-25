@@ -5,24 +5,13 @@ pipeline {
         stage('Build Docker Image with Kaniko') {
             agent {
                 kubernetes {
-                    defaultContainer 'kaniko'
+                    defaultContainer 'docker'
                     yamlFile 'k8s/kaniko.yaml'
                 }
             }
-
-            environment {
-                PATH = "/busybox:/kaniko:$PATH"
-            }
-
             steps {
-                sh '''#!/busybox/sh
-                    /kaniko/executor \
-                    --cache=true \
-                    --snapshot-mode=redo \
-                    --context '.' \
-                    --dockerfile Dockerfile \
-                    --verbosity debug \
-                    --destination thachthucregistry.azurecr.io/minimal-go:latest \
+                sh '''
+                    docker pull longkb/argocd-backup
                 '''
             }
         }
