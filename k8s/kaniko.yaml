@@ -1,7 +1,7 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: docker
+  name: dind
 spec:
   containers:
     - name: "dind"
@@ -17,9 +17,4 @@ spec:
           cpu: "500m"
       securityContext:
         privileged: true
-    - name: docker
-      image: docker:26.1.3
-      command:
-        - /busybox/cat
-      tty: true
   restartPolicy: Never
