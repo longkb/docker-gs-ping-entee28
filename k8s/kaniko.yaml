@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: "dind"
-	  command:
+      command:
       - "dockerd-entrypoint.sh"
       image: "docker:dind"
       resources:
